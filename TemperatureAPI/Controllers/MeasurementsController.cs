@@ -64,8 +64,8 @@ namespace TemperatureAPI.Controllers
         [HttpGet("{firstDate}/{hours}/{hours2}")]
         public async Task<ActionResult<IEnumerable<Measurement>>> GetMeasurementsBetweenDates(string firstDate, string hours,string hours2)
         {
-            DateTime start = new DateTime(0,0,0);
-            DateTime end = new DateTime(0, 0, 0);
+            DateTime start = new DateTime();
+            DateTime end = new DateTime();
 
             try
             {
@@ -80,7 +80,8 @@ namespace TemperatureAPI.Controllers
                 throw new HttpListenerException(400, "Bad request: " + e.Message);
             }
 
-            return await _context.Measurements.Where(m => m.Time >= start && m.Time <= end).ToListAsync<Measurement>();
+            var res = await _context.Measurements.Where(m => m.Time >= start && m.Time <= end).ToListAsync<Measurement>();
+            return res;
         }
 
         // PUT: api/Measurements/5
