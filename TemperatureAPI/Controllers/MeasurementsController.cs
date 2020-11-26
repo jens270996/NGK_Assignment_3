@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -85,6 +86,8 @@ namespace TemperatureAPI.Controllers
         // PUT: api/Measurements/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
+
+        [Authorize]
         [HttpPut("{id}")]
         public async Task<IActionResult> PutMeasurement(int id, Measurement measurement)
         {
@@ -117,9 +120,11 @@ namespace TemperatureAPI.Controllers
         // POST: api/Measurements
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
+        [Authorize]
         [HttpPost]
         public async Task<ActionResult<Measurement>> PostMeasurement(Measurement measurement)
         {
+            measurement.Time = DateTime.Now;
             _context.Measurements.Add(measurement);
             await _context.SaveChangesAsync();
 
@@ -127,6 +132,7 @@ namespace TemperatureAPI.Controllers
         }
 
         // DELETE: api/Measurements/5
+        [Authorize]
         [HttpDelete("{id}")]
         public async Task<ActionResult<Measurement>> DeleteMeasurement(int id)
         {
