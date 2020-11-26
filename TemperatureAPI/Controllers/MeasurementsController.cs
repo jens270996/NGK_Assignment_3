@@ -44,10 +44,10 @@ namespace TemperatureAPI.Controllers
             return measurement;
         }
         //"yy-mm-dd"
-        [HttpGet("{firstDate}")]
+        [HttpGet("Date/{firstDate}")]
         public async Task<ActionResult<IEnumerable<Measurement>>> GetMeasurementsFromDate(string firstDate)
         {
-            DateTime date = new DateTime(0, 0, 0);
+            DateTime date = new DateTime();
             try
             {
                 var tokens = firstDate.Split("-");
