@@ -24,5 +24,7 @@ namespace TemperatureAPI.Data
             builder.Entity<Measurement>().HasOne(m=>m.Location).WithMany(l=>l.Measurements).HasForeignKey(m => m.LocationName);
             builder.Entity<Measurement>().HasIndex(m => m.Time);
         }
+
+        public DbSet<User> Users { get; set; }
     }
 }
