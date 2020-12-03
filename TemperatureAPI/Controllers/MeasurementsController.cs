@@ -84,6 +84,13 @@ namespace TemperatureAPI.Controllers
             return res;
         }
 
+        [HttpGet("ThreeLatest")]
+        public async Task<ActionResult<IEnumerable<Measurement>>> GetThreeLatest()
+        {
+            var res = await _context.Measurements.OrderBy(m => m.Time).Take(3).ToListAsync();
+            return res;
+        }
+
         // PUT: api/Measurements/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
