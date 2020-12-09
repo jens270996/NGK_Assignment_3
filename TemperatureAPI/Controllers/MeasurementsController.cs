@@ -87,7 +87,8 @@ namespace TemperatureAPI.Controllers
         [HttpGet("ThreeLatest")]
         public async Task<ActionResult<IEnumerable<Measurement>>> GetThreeLatest()
         {
-            var res = await _context.Measurements.OrderBy(m => m.Time).Take(3).ToListAsync();
+            
+            var res = await _context.Measurements.OrderByDescending(m => m.Time).Take(3).ToListAsync();
             return res;
         }
 
