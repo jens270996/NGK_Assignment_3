@@ -10,11 +10,15 @@ using System.Threading.Tasks;
 using TemperatureAPI.Controllers;
 using TemperatureAPI.Data;
 using TemperatureAPI.Models;
+using NSubstitute;
+using TemperatureAPI.Hubs;
+using Microsoft.AspNetCore.SignalR;
 
 namespace TestProject
 {
     public class MeasurementControllerTest
     {
+        
         private DbContextOptions<ApplicationContext> _options;
         private MeasurementsController _uut;
         private Measurement m1;
@@ -43,7 +47,8 @@ namespace TestProject
                     new Measurement { LocationName = "Odense", Humidity = 70, Time = new DateTime(2020, 2, 1), Pressure = 1019.9 }
                     );
                 context.SaveChanges();
-                _uut = new MeasurementsController(context);
+                var hub=Substitute.For<IHubContext<MeasurementHub, IMeasurment>>();
+                _uut = new MeasurementsController(context,hub);
 
             
 

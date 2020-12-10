@@ -8,11 +8,11 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json;
+
 using TemperatureAPI.Data;
 using TemperatureAPI.Hubs;
 using TemperatureAPI.Models;
-
+using System.Text.Json;
 namespace TemperatureAPI.Controllers
 {
     [Route("api/[controller]")]
@@ -141,8 +141,8 @@ namespace TemperatureAPI.Controllers
             measurement.Time = DateTime.Now;
             _context.Measurements.Add(measurement);
             await _context.SaveChangesAsync();
-            JsonSerializer.Serialize<Measurement>(measurement);
-            await _mhub.Clients.All.ReceiveMessage(measurement.LocationName,JsonSerializer.Serialize<Measurement>(measurement));
+            var m=JsonSerializer.Serialize(measurement);
+            await _mhub.Clients.All.ReceiveMessage(measurement.LocationName,m);
             return CreatedAtAction("GetMeasurement", new { id = measurement.MeasurementId }, measurement);
         }
 
