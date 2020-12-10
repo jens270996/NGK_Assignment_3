@@ -6,8 +6,11 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using TemperatureAPI.Data;
+using TemperatureAPI.Hubs;
 using TemperatureAPI.Models;
 
 namespace TemperatureAPI.Controllers
@@ -17,10 +20,12 @@ namespace TemperatureAPI.Controllers
     public class MeasurementsController : ControllerBase
     {
         private readonly ApplicationContext _context;
+        private readonly IHubContext<MeasurementHub,IMeasurment> _mhub;
 
-        public MeasurementsController(ApplicationContext context)
+        public MeasurementsController(ApplicationContext context, IHubContext<MeasurementHub,IMeasurment> Mhub)
         {
             _context = context;
+            _mhub = Mhub;
         }
 
         // GET: api/Measurements
@@ -136,7 +141,8 @@ namespace TemperatureAPI.Controllers
             measurement.Time = DateTime.Now;
             _context.Measurements.Add(measurement);
             await _context.SaveChangesAsync();
-
+            JsonSerializer.Serialize<Measurement>(measurement);
+            await _mhub.Clients.All.ReceiveMessage(measurement.LocationName,JsonSerializer.Serialize<Measurement>(measurement));
             return CreatedAtAction("GetMeasurement", new { id = measurement.MeasurementId }, measurement);
         }
 
