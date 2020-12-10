@@ -3,16 +3,12 @@ using Microsoft.AspNetCore.SignalR;
 
 namespace TemperatureAPI.Hubs
 {
-    public class MeasurementHub : Hub<IMeasurement> 
+    public class MeasurementHub : Hub 
     {
         public async Task SendMessage(string user, string message)
         {
-            await Clients.All.ReceiveMessage( message, user);
+            await Clients.All.SendAsync("ReceiveMessage", user, message);
         }
     }
 
-    public interface IMeasurement
-    {
-        Task ReceiveMessage(string user, string message);
-    }
 }

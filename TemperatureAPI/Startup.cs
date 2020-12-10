@@ -77,12 +77,10 @@ namespace TemperatureAPI
             app.UseAuthentication();
             
             app.UseAuthorization();
-
+            //app.UseSignalR(routes => { routes.MapHub<MeasurementHub>("/MeasurementHub"); });
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllerRoute(
-                    name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                
                 endpoints.MapControllers();
                 endpoints.MapHub<MeasurementHub>("/MeasurementHub");
             });

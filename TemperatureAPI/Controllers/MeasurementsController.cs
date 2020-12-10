@@ -20,9 +20,9 @@ namespace TemperatureAPI.Controllers
     public class MeasurementsController : ControllerBase
     {
         private readonly ApplicationContext _context;
-        private readonly IHubContext<MeasurementHub,IMeasurement> _mhub;
+        private readonly IHubContext<MeasurementHub> _mhub;
 
-        public MeasurementsController(ApplicationContext context, IHubContext<MeasurementHub,IMeasurement> Mhub)
+        public MeasurementsController(ApplicationContext context, IHubContext<MeasurementHub> Mhub)
         {
             _context = context;
             _mhub = Mhub;
@@ -141,8 +141,8 @@ namespace TemperatureAPI.Controllers
             measurement.Time = DateTime.Now;
             _context.Measurements.Add(measurement);
             await _context.SaveChangesAsync();
-            var m=JsonSerializer.Serialize(measurement);
-            await _mhub.Clients.All.ReceiveMessage(measurement.LocationName,m);
+            
+            await _mhub.Clients.All.SendAsync("ReceiveMessage", measurement.LocationName,measurement);
             return CreatedAtAction("GetMeasurement", new { id = measurement.MeasurementId }, measurement);
         }
 

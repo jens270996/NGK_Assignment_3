@@ -47,7 +47,7 @@ namespace TestProject
                     new Measurement { LocationName = "Odense", Humidity = 70, Time = new DateTime(2020, 2, 1), Pressure = 1019.9 }
                     );
                 context.SaveChanges();
-                var hub=Substitute.For<IHubContext<MeasurementHub, IMeasurement>>();
+                var hub=Substitute.For<IHubContext<MeasurementHub>>();
                 _uut = new MeasurementsController(context,hub);
 
             

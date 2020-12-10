@@ -34,8 +34,8 @@ namespace TestProject
         [Test]
         public void GetUser()
         {
-            ManageUsersController manage = new ManageUsersController(context:);
-            List<User> = manage.GetUser();
+            //ManageUsersController manage = new ManageUsersController(context);
+            //List<User> = manage.GetUser();
         }
     }
 }
