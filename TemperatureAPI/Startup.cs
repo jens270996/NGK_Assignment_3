@@ -34,6 +34,7 @@ namespace TemperatureAPI
             var appSettingsSection = Configuration.GetSection("AppSettings");
             services.Configure<AppSettings>(appSettingsSection);
             services.AddSignalR();
+            
             services.AddDbContext<ApplicationContext>(options =>
             options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
@@ -69,12 +70,19 @@ namespace TemperatureAPI
                 app.UseDeveloperExceptionPage();
             }
 
+
+            
+            app.UseStaticFiles();
             app.UseRouting();
             app.UseAuthentication();
+            
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "{controller=Home}/{action=Index}/{id?}");
                 endpoints.MapControllers();
                 endpoints.MapHub<MeasurementHub>("/MeasurementHub");
             });

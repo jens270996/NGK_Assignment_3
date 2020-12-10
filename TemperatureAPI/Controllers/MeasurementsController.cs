@@ -20,9 +20,9 @@ namespace TemperatureAPI.Controllers
     public class MeasurementsController : ControllerBase
     {
         private readonly ApplicationContext _context;
-        private readonly IHubContext<MeasurementHub,IMeasurment> _mhub;
+        private readonly IHubContext<MeasurementHub,IMeasurement> _mhub;
 
-        public MeasurementsController(ApplicationContext context, IHubContext<MeasurementHub,IMeasurment> Mhub)
+        public MeasurementsController(ApplicationContext context, IHubContext<MeasurementHub,IMeasurement> Mhub)
         {
             _context = context;
             _mhub = Mhub;
